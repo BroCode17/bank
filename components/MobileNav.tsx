@@ -13,6 +13,8 @@ import { cn } from "@/lib/utils";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import Footer from "./Footer";
+import { MobileNavProps } from "@/types";
 
 const MobileNav = ({ user }: MobileNavProps) => {
   const pathName = usePathname();
@@ -51,7 +53,7 @@ const MobileNav = ({ user }: MobileNavProps) => {
                     pathName === item.route ||
                     pathName.startsWith(`${item.route}/`);
                   return (
-                    <SheetClose asChild>
+                    <SheetClose asChild key={item.label}>
                       <Link
                         href={item.route}
                         key={item.label}
@@ -83,6 +85,8 @@ const MobileNav = ({ user }: MobileNavProps) => {
                 })}
               </nav>
             </SheetClose>
+
+            <Footer user={user} type='mobile'/>
           </div>
         </SheetContent>
       </Sheet>
