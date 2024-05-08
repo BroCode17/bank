@@ -24,6 +24,7 @@ import { authFormSchema } from "@/lib/utils";
 import { Loader2 } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { signIn, signUp } from "@/lib/actions/user.actions";
+import PlaidLink from "./PlaidLink";
 
 const AuthForm = ({ signType }: { signType: string }) => {
   const [user, setUser] = useState();
@@ -48,9 +49,24 @@ const AuthForm = ({ signType }: { signType: string }) => {
     // ✅ This will be type-safe and validated.
     setIsLoading(true);
     try {
+      const userData = {
+        firstName: data.firstName!,
+        lastName: data.lastName!,
+        address1: data.address1!,
+        city: data.city!,
+        state: data.state!,
+        postalCode: data.postalCode!,
+        dateOfBirth: data.dateOfBirth!,
+        ssn: data.ssn!,
+        email: data.email,
+        password: data.password,
+      }
+      
       //sign up with app write & create plaid link token
+
+
       if (signType === "sign-up") {
-        const newUser = await signUp(data);
+        const newUser = await signUp(userData);
 
         setUser(newUser);
       }
@@ -103,8 +119,10 @@ const AuthForm = ({ signType }: { signType: string }) => {
         </div>
       </header>
       {user ? (
-        <div className="flex flex-col gap-4">{"PlaidLink"}</div>
-      ) : (
+        <div className="flex flex-col gap-4">
+          <PlaidLink user={user} variant="primary" />
+        </div>
+       ) : ( 
         <>
           <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
@@ -125,7 +143,7 @@ const AuthForm = ({ signType }: { signType: string }) => {
                     />
                   </div>
                   <CustomerInput
-                    name="address"
+                    name="address1"
                     labelName="Address"
                     form={form}
                     placehoder={"Enter your specific address"}
@@ -152,7 +170,7 @@ const AuthForm = ({ signType }: { signType: string }) => {
                   </div>
                   <div className="flex gap-4">
                     <CustomerInput
-                      name="dob"
+                      name="dateOfBirth"
                       labelName="Date of Birth"
                       form={form}
                       placehoder={"YYYY-MM-DD"}
