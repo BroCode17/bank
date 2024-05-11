@@ -3,7 +3,7 @@ import Link from "next/link";
 import React, { useState } from "react";
 import Image from "next/image";
 
-import { z } from "zod";
+import { boolean, z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 
@@ -25,10 +25,15 @@ import { Loader2 } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { signIn, signUp } from "@/lib/actions/user.actions";
 import PlaidLink from "./PlaidLink";
+import Error from "next/error";
+import { error } from "console";
 
 const AuthForm = ({ signType }: { signType: string }) => {
   const [user, setUser] = useState();
   const [isLoading, setIsLoading] = useState(false);
+  const [isError, setIsError] = useState();
+  const [message, setMessage] = useState();
+
   const router = useRouter();
  
   // 1. Define your form.
@@ -72,20 +77,25 @@ const AuthForm = ({ signType }: { signType: string }) => {
       }
 
       if (signType == "sign-in") {
-        const response = await signIn({
+          const response = await signIn({
           email: data.email,
           password: data.password,
         });
-
+        //console.log("response: ---- ",response)
+        if(response?.error){
+         setIsError(response?.error)
+          //console.log(isError)
+        }
         if (response) {
           router.push("/");
         }
       }
     } catch (error) {
-      console.log(error);
+      //console.log("Error ----->: ", error)
     } finally {
       setIsLoading(false);
     }
+    //console.log(isError)
   };
   return (
     <section className="auth-form">
@@ -96,11 +106,11 @@ const AuthForm = ({ signType }: { signType: string }) => {
             src={"/icons/logo.svg"}
             height={34}
             width={34}
-            alt="Horizon Login"
+            alt="Fast Login"
             className="size-[24px] max-lg:size-14"
           />
           <h1 className="text-26 font-ibm-plex-serif font-bold text-black-1">
-            Horizon
+            Fast
           </h1>
         </Link>
         <div className="flex flex-col gap-1 md:gap-3">

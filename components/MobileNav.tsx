@@ -39,10 +39,10 @@ const MobileNav = ({ user }: MobileNavProps) => {
               src={"/icons/logo.svg"}
               height={34}
               width={34}
-              alt="Horizon Login"
+              alt="Fast Login"
             />
             <h1 className="text-26 font-ibm-plex-serif font-bold text-black-1">
-              Horizon
+              Fast
             </h1>
           </Link>
           <div className="mobilenav-sheet">

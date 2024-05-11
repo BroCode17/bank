@@ -23,10 +23,10 @@ const Sidebar = ({ user }: SiderbarProps) => {
             src={"/icons/logo.svg"}
             height={34}
             width={34}
-            alt="Horizon Login"
+            alt="Fast Login"
             className="size-[24px] max-lg:size-14"
           />
-          <h1 className="sidebar-logo">Horizon</h1>
+          <h1 className="sidebar-logo">Fast</h1>
         </Link>
         {sidebarLinks.map((item) => {
           const isActive =

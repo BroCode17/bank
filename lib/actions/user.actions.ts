@@ -29,6 +29,7 @@ import {
 import { plaidClient } from "../plaid";
 import { revalidatePath } from "next/cache";
 import { addFundingSource, createDwollaCustomer } from "./dwolla.actions";
+import { useState } from "react";
 
 const {
   APPWRITE_DATABASE_ID: DATABASE_ID,
@@ -37,6 +38,8 @@ const {
 } = process.env;
 
 export const getUserInfo = async ({ userId }: getUserInfoProps) => {
+ 
+  
   try {
     const { database } = await createAdminClient();
 
@@ -48,18 +51,19 @@ export const getUserInfo = async ({ userId }: getUserInfoProps) => {
 
     return parseStringify(user.documents[0]);
   } catch (error) {
-    console.log(error)
+    console.log("getUserInfo error: ",error)
   }
 }
 
 export const signIn = async ({ email, password }: signInProps) => {
+  
   try {
     //Mutation / Database / Make fetch
     const { account } = await createAdminClient();
 
     //Save the session
     const session = await account.createEmailPasswordSession(email, password);
-
+   
     cookies().set("appwrite-session", session.secret, {
       path: "/",
       httpOnly: true,
@@ -71,7 +75,7 @@ export const signIn = async ({ email, password }: signInProps) => {
 
     return parseStringify(user);
   } catch (error) {
-    console.log("Error", error);
+    return parseStringify({error: error})
   }
 };
 
@@ -125,7 +129,8 @@ export const signUp = async ({ password, ...userData }: SignUpParams) => {
 
     
   } catch (error) {
-    console.log("Error-->", error);
+    return parseStringify({error: error})
+    // console.log("Error-->", error);
   }
 };
 
@@ -173,7 +178,7 @@ export const createLinkToken = async (user: User) => {
 
     return parseStringify({ linkToken: response.data.link_token });
   } catch (error) {
-    console.log(error);
+    console.log("createLinkToken error: ",error);
   }
 };
 

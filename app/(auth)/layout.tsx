@@ -1,4 +1,6 @@
+import { ErrorBoundary } from "next/dist/client/components/error-boundary";
 import Image from "next/image";
+import Error from "./error";
 
 export default function RootLayout({
   children,

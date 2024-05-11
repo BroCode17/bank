@@ -12,7 +12,7 @@ const HomePage = async ({searchParams: {id, page}}: SearchParamProps) => {
   const currentPage = Number(page as string ) || 1
   const loggedIn = await getLoggedInUser()
   //get banks and update the homepage
-  const accounts = await getAccounts({userId: loggedIn.$id})
+  const accounts = await getAccounts({userId: loggedIn?.$id})
 
   if(!accounts) return;
 
@@ -28,7 +28,7 @@ const HomePage = async ({searchParams: {id, page}}: SearchParamProps) => {
         <header className="home-header">
             <HeaderBox
                 type="greeting"
-                title="welcome"
+                title="Welcome"
                 user={loggedIn?.firstName || 'Guest'}
                 subtext="Access and manage your account and transactions"
             />
